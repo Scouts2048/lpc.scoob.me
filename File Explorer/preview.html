@@ -1,0 +1,260 @@
+<!doctype html>
+<!--
+  Local-only preview shell. NOT part of the deployed page.
+  The real index.html is a fragment the scoob.me platform wraps with its
+  own <head> (fonts, style.css link, view-counter script that fills in
+  data-scoob-views / data-scoob-live). This file just replicates that
+  wrapping so you can open it directly in a browser to check the design.
+  Do not upload this file to the platform.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lpc.scoob.me -- File Explorer preview</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+  <svg class="noise">
+    <filter id="n">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="t"/>
+      <feColorMatrix in="t" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.4 0"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#n)"/>
+  </svg>
+  <div class="scanlines"></div>
+  <div class="glow-orb"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <input type="checkbox" id="boot-dismiss" class="a11y-input">
+
+  <label for="boot-dismiss" class="boot">
+    <div class="boot-mark">lpc<span class="boot-caret">_</span></div>
+    <div class="boot-line">mounting ~/lpc.scoob.me<span class="boot-dots"></span></div>
+    <div class="boot-bar"><div class="boot-bar-fill"></div></div>
+    <div class="boot-prompt">click to enter &middot; sound on</div>
+  </label>
+
+  <!--
+    Autoplay-with-sound is blocked by browsers until a real user gesture
+    triggers playback -- CSS alone can't call play(). This is the one
+    deliberate exception to the rest of the page's zero-JavaScript build:
+    a single listener that starts the track the moment the boot screen
+    is clicked, plus a mute toggle so the audio can always be silenced.
+    TODO: replace the placeholder src below with the real track URL.
+  -->
+  <audio id="bgm" src="https://cdn.scoob.me/603001209745571882/PUPPIES_DARK_THOUGHTS_MOUSE_BUG1.mp3" loop preload="auto"></audio>
+
+  <div class="explorer">
+
+    <input type="radio" name="file" id="file-about" class="a11y-input" checked>
+    <input type="radio" name="file" id="file-links" class="a11y-input">
+    <input type="radio" name="file" id="file-stats" class="a11y-input">
+    <input type="checkbox" id="toggle-assets" class="a11y-input">
+    <input type="checkbox" id="menu-toggle" class="a11y-input">
+    <input type="checkbox" id="lightbox-toggle" class="a11y-input">
+
+    <div class="titlebar">
+      <label for="menu-toggle" class="menu-btn" aria-label="Toggle file tree">
+        <span></span><span></span><span></span>
+      </label>
+      <div class="traffic-lights" aria-hidden="true">
+        <span class="tl-dot tl-red"></span>
+        <span class="tl-dot tl-amber"></span>
+        <span class="tl-dot tl-green"></span>
+      </div>
+      <div class="titlebar-path">
+        <span class="path-root">~/lpc.scoob.me</span><span class="path-sep">/</span><span class="path-file">about.md</span>
+      </div>
+      <div class="titlebar-spacer" aria-hidden="true"></div>
+    </div>
+
+    <label for="menu-toggle" class="scrim" aria-hidden="true"></label>
+
+    <div class="explorer-body">
+
+      <aside class="sidebar">
+        <div class="tree-root">
+          <span class="caret">&#9656;</span>
+          <span class="icon icon-folder" aria-hidden="true"></span>
+          <span>lpc.scoob.me</span>
+        </div>
+
+        <nav class="tree-children" aria-label="File navigation">
+          <label for="file-about" class="tree-item" data-target="file-about">
+            <span class="icon icon-md" aria-hidden="true">M</span>
+            <span class="tree-label">about.md</span>
+          </label>
+          <label for="file-links" class="tree-item" data-target="file-links">
+            <span class="icon icon-md" aria-hidden="true">M</span>
+            <span class="tree-label">links.md</span>
+          </label>
+          <label for="file-stats" class="tree-item" data-target="file-stats">
+            <span class="icon icon-md" aria-hidden="true">M</span>
+            <span class="tree-label">stats.md</span>
+          </label>
+
+          <label for="toggle-assets" class="tree-item tree-folder">
+            <span class="caret caret-sm">&#9656;</span>
+            <span class="icon icon-folder icon-folder-sm" aria-hidden="true"></span>
+            <span class="tree-label">assets</span>
+          </label>
+          <div class="tree-nested">
+            <label for="lightbox-toggle" class="tree-item">
+              <span class="icon icon-img" aria-hidden="true">P</span>
+              <span class="tree-label">lpc.webp</span>
+            </label>
+          </div>
+        </nav>
+
+        <div class="sidebar-status">
+          <a class="branch" href="https://scoob.me"><span class="branch-icon" aria-hidden="true">&#8961;</span> main</a>
+          <span class="online"><span class="online-dot"></span>online</span>
+        </div>
+      </aside>
+
+      <main class="viewer">
+        <div class="scroll-progress" aria-hidden="true"></div>
+
+        <div class="tabbar">
+          <label for="file-about" class="tab" data-target="file-about">
+            <span class="icon icon-md icon-md-tab" aria-hidden="true">M</span>about.md
+          </label>
+          <label for="file-links" class="tab" data-target="file-links">
+            <span class="icon icon-md icon-md-tab" aria-hidden="true">M</span>links.md
+          </label>
+          <label for="file-stats" class="tab" data-target="file-stats">
+            <span class="icon icon-md icon-md-tab" aria-hidden="true">M</span>stats.md
+          </label>
+        </div>
+
+        <div class="panes">
+
+          <article class="pane pane-about markdown-body">
+            <figure class="hero">
+              <span class="hero-stars" aria-hidden="true"></span>
+              <span class="hero-mountains" aria-hidden="true">
+                <span class="mtn mtn-back"></span>
+                <span class="mtn mtn-mid"></span>
+                <span class="mtn mtn-front"></span>
+              </span>
+              <span class="hero-mist" aria-hidden="true"></span>
+              <span class="hero-scrim" aria-hidden="true"></span>
+              <figcaption class="hero-copy">
+                <h1 class="hero-title" data-text="lpc">lpc</h1>
+                <p class="hero-sub">troonware representative<span class="cursor">_</span></p>
+              </figcaption>
+            </figure>
+
+            <blockquote class="md-quote">
+              This is a demonstration of the new Custom HTML and CSS feature.
+            </blockquote>
+
+            <h2>Links</h2>
+            <p class="md-inline-links">
+              <a href="https://discord.gg/scoob" class="md-raw-link" target="_blank" rel="noopener"><span class="md-bracket">[</span>Discord<span class="md-bracket">]</span><span class="md-url">(https://discord.gg/scoob)</span></a>
+              <a href="https://scoob.me/troonware" class="md-raw-link md-raw-link-red" target="_blank" rel="noopener"><span class="md-bracket">[</span>Troonware<span class="md-bracket">]</span><span class="md-url">(https://scoob.me/troonware)</span></a>
+            </p>
+
+            <h2>Signal</h2>
+            <div class="signal">
+              <div class="signal-cell">
+                <span class="signal-label">Views</span>
+                <span class="signal-value" data-scoob-views>1,204</span>
+              </div>
+              <div class="signal-divider"></div>
+              <div class="signal-cell">
+                <span class="signal-label">Here now</span>
+                <span class="signal-readout">
+                  <span class="signal-radar" aria-hidden="true">
+                    <span class="signal-radar-blip"></span>
+                    <span class="signal-radar-blip"></span>
+                  </span>
+                  <span class="signal-value signal-value--live" data-scoob-live>3</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="pane pane-links markdown-body">
+            <h1>links.md</h1>
+            <p class="md-lede">Everything worth clicking, filed in one place.</p>
+
+            <p class="md-inline-links">
+              <a href="https://discord.gg/scoob" class="md-raw-link" target="_blank" rel="noopener"><span class="md-bracket">[</span>Discord<span class="md-bracket">]</span><span class="md-url">(https://discord.gg/scoob)</span></a>
+              <a href="https://scoob.me/troonware" class="md-raw-link md-raw-link-red" target="_blank" rel="noopener"><span class="md-bracket">[</span>Troonware<span class="md-bracket">]</span><span class="md-url">(https://scoob.me/troonware)</span></a>
+            </p>
+          </article>
+
+          <article class="pane pane-stats markdown-body">
+            <h1>stats.md</h1>
+            <p class="md-lede">Views, and who else is around right now.</p>
+
+            <h2>Runtime signal</h2>
+            <div class="signal signal-wide">
+              <div class="signal-cell">
+                <span class="signal-label">Views</span>
+                <span class="signal-value" data-scoob-views>1,204</span>
+              </div>
+              <div class="signal-divider"></div>
+              <div class="signal-cell">
+                <span class="signal-label">Here now</span>
+                <span class="signal-readout">
+                  <span class="signal-radar" aria-hidden="true">
+                    <span class="signal-radar-blip"></span>
+                    <span class="signal-radar-blip"></span>
+                  </span>
+                  <span class="signal-value signal-value--live" data-scoob-live>3</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </main>
+    </div>
+
+    <div class="statusbar">
+      <a class="branch" href="https://scoob.me"><span class="branch-icon" aria-hidden="true">&#8961;</span> main</a>
+      <span class="statusbar-sep" aria-hidden="true">&middot;</span>
+      <span>Markdown</span>
+      <span class="statusbar-sep" aria-hidden="true">&middot;</span>
+      <span>UTF-8</span>
+      <span class="statusbar-grow"></span>
+      <button type="button" id="mute-toggle" class="mute-btn" aria-pressed="false" aria-label="Toggle music">
+        <svg class="icon-speaker icon-speaker-on" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.3 8.3c1.1.9 1.7 2.2 1.7 3.7s-.6 2.8-1.7 3.7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+        <svg class="icon-speaker icon-speaker-off" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="15.5" y1="9.5" x2="20.5" y2="14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><line x1="20.5" y1="9.5" x2="15.5" y2="14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <span class="statusbar-sep" aria-hidden="true">&middot;</span>
+      <span class="statusbar-live"><span class="online-dot"></span>synced</span>
+    </div>
+  </div>
+
+  <label for="lightbox-toggle" class="lightbox" aria-hidden="true">
+    <figure class="lightbox-card">
+      <img src="https://scoob.me/assets/avatars/lpc.webp" alt="lpc.webp" class="lightbox-img">
+      <figcaption class="lightbox-caption">assets/lpc.webp</figcaption>
+    </figure>
+  </label>
+
+  <script>
+    (function () {
+      var boot = document.getElementById('boot-dismiss');
+      var bgm = document.getElementById('bgm');
+      var muteBtn = document.getElementById('mute-toggle');
+
+      boot.addEventListener('change', function () {
+        if (this.checked) bgm.play().catch(function () {});
+      }, { once: true });
+
+      muteBtn.addEventListener('click', function () {
+        bgm.muted = !bgm.muted;
+        muteBtn.setAttribute('aria-pressed', String(bgm.muted));
+        muteBtn.classList.toggle('is-muted', bgm.muted);
+      });
+    })();
+  </script>
+</div>
+</body>
+</html>
